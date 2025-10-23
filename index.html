@@ -2,189 +2,207 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Jogo do Amor 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amigas da Thais 💖</title>
 <style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: radial-gradient(circle at center, #8b0034, #40001b);
-    color: white;
-    text-align: center;
-}
-.hidden { display: none; }
-button {
-    background: #ff4d8c;
-    border: none;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-button:hover { background: #ff75a5; }
-
-#loginArea, #profileArea, #gameArea, #secretArea, #quizArea, #finalSecret {
-    margin-top: 50px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 70px);
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-.card {
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: #ff4d8c;
-}
-.card.flipped { background: #ffb6c1; color: #fff; }
+body{font-family:'Poppins',sans-serif;margin:0;padding:0;background:#fff6fb;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;}
+.center-card{max-width:520px;width:90%;background:#fff;padding:20px;margin-top:40px;border-radius:20px;box-shadow:0 8px 30px rgba(255,111,163,0.25);text-align:center;}
+img{width:120px;height:120px;border-radius:50%;margin-bottom:10px;}
+button,input,select{font-family:inherit;padding:10px;border-radius:10px;border:1px solid #f0d8e6;width:100%;margin:6px 0;}
+button{background:linear-gradient(145deg,#ffb6da,#ff89b2);color:white;font-weight:600;border:0;cursor:pointer;transition:.25s;}
+button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
+.hidden{display:none!important;}
+.secret-btn{margin-top:12px;padding:12px;border-radius:50px;background:linear-gradient(145deg,#ffb6da,#ff89b2);color:#fff;font-size:1em;cursor:pointer;position:relative;}
+.secretText{margin-top:20px;padding:15px;border-radius:12px;background:linear-gradient(145deg,#fff0f4,#ffe3ee);color:#4a333f;font-weight:600;text-align:left;white-space:pre-line;}
+.board{display:grid;grid-template-columns:repeat(4,70px);gap:10px;justify-content:center;padding:16px;}
+.card{width:70px;height:70px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;user-select:none;transition:transform .25s,background .25s;}
+.card.flipped{background:linear-gradient(180deg,#fff,#ffeef6);transform:rotateY(180deg);}
+.card.matched{background:#ffe0ed;border-color:#ff6fa3;pointer-events:none;}
 </style>
 </head>
 <body>
+<main class="center-card">
+<h1>💞 Amigas da Thais 💞</h1>
 
 <div id="loginArea">
-    <h2>💘 Jogo do Amor 💘</h2>
-    <p>Digite seu nome e data de nascimento:</p>
-    <input id="nome" placeholder="Nome"><br><br>
-    <input id="senha" placeholder="Senha (ddmmaaaa)" type="password"><br><br>
-    <button id="loginBtn">Entrar</button>
+<p>Faça login com seu nome e senha (data de aniversário ddmmaaaa):</p>
+<input type="text" id="loginName" placeholder="Seu nome">
+<input type="text" id="loginPass" placeholder="Data de aniversário">
+<button id="loginBtn">Entrar</button>
+<div id="loginError" style="color:red;"></div>
 </div>
 
 <div id="profileArea" class="hidden">
-    <h2 id="nomePerfil"></h2>
-    <button id="startBtn">💖 Ficou curiosa? Quer jogar e descobrir segredos?</button>
+<img id="profilePhoto" src="" alt="">
+<h1 id="profileName"></h1>
+<div id="profileAge"></div>
+<div class="secretText" id="profileDesc"></div>
+
+<button id="startBtn" class="secret-btn">💖 Ficou curiosa? Quer jogar e descobrir segredos?</button>
+
+<div id="gameArea" class="hidden" style="margin-top:15px;">
+<h3>🎮 Jogo da Memória</h3>
+<div class="board" id="board"></div>
+<p id="moves">Jogadas: 0</p>
+<div id="msgFinal" class="secretText hidden"></div>
+<button id="resetBtn">🔁 Reiniciar</button>
 </div>
 
-<div id="gameArea" class="hidden">
-    <h2>Jogo da Memória 💞</h2>
-    <div class="grid" id="grid"></div>
-    <p id="msg"></p>
+<div id="secretArea" class="hidden" style="margin-top:20px;">
+<h3>🔐 Área Secreta</h3>
+<p>Digite a senha que apareceu pra você:</p>
+<input id="areaInput" placeholder="Digite a senha">
+<button id="areaBtn">Entrar</button>
+
+<div id="quizArea" class="hidden" style="margin-top:20px;">
+<h3>📝 Quiz</h3>
+<form id="quizForm">
+<label>1️⃣ Qual seu nome?</label>
+<select name="nome" required>
+<option value="">Selecione</option>
+<option>Paola</option><option>Paula</option><option>Sophia</option><option>Ana Clara</option><option>Ana Maria</option>
+</select>
+<label>2️⃣ Qual sua idade?</label>
+<select name="idade" required>
+<option value="">Selecione</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+</select>
+<label>3️⃣ Qual sua cor favorita?</label><input name="cor" required>
+<label>4️⃣ Você gosta de algum esporte?</label><input name="esporte" required>
+<label>5️⃣ Qual sua comida favorita?</label><input name="comida" required>
+<label>6️⃣ Qual sua música favorita?</label><input name="musica" required>
+<label>7️⃣ Você tem algum hobby?</label><input name="hobby" required>
+<label>8️⃣ Se pudesse ter um superpoder, qual seria?</label><input name="superpoder" required>
+<button type="submit">✅ Enviar Quiz</button>
+</form>
 </div>
 
-<div id="secretArea" class="hidden">
-    <h3>Área Secreta 🔐</h3>
-    <p>Digite a senha que apareceu no final do jogo:</p>
-    <input id="areaInput" placeholder="Senha secreta">
-    <button id="areaBtn">Entrar</button>
+<div id="finalSecret" class="secretText hidden"></div>
+<button id="logoutBtn" style="margin-top:12px;">Sair</button>
 </div>
-
-<div id="quizArea" class="hidden">
-    <h3>Quiz do Amor 💘</h3>
-    <form id="quizForm">
-        <p>1️⃣ Qual é a cor preferida da amizade?</p>
-        <input required><br><br>
-        <button type="submit">Enviar</button>
-    </form>
-</div>
-
-<div id="finalSecret" class="hidden">
-    <h2>✨ Segredo Final ✨</h2>
-    <p id="segredoTexto"></p>
-</div>
+</main>
 
 <script>
-// Login e perfis
-const perfis = {
-  "Paola": { senha: "18012008", codigo: "paolinha22", segredo: "Paola, você é luz e alegria — seu sorriso muda o dia de todo mundo! 🌸" },
-  "Paula": { senha: "18012008", codigo: "paulaqueen", segredo: "Paula, você é a base da amizade — forte, divertida e única! 💕" },
-  "Sophia": { senha: "01122007", codigo: "sofi_star", segredo: "Sophia, sua energia é contagiante! Ninguém ilumina o grupo como você. ✨" },
-  "Ana Clara": { senha: "02112007", codigo: "claraheart", segredo: "Ana Clara, você é pura ternura — e sempre deixa o grupo mais leve! 🌷" },
-  "Ana Maria": { senha: "08092009", codigo: "marylove", segredo: "Ana Maria, você é o abraço em forma de gente. 💖" }
+const USERS = {
+  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga alegre, divertida e cheia de energia!', birthday:'18012008', trueSecret:`💗Paola💗 ...`, senha:'paola123'},
+  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é doce, carinhosa e maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖 ...`, senha:'paula123'},
+  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸 Sophia✨💛 ...`, senha:'sophia123'},
+  'Ana Clara':{photo:'imagens/anaclara.jpg', age:17, desc:'Ana Clara é doce, gentil e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖 Ana Clara 💖 ...`, senha:'clarinha123'},
+  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️💗 Ana Maria ☀️💗 ...`, senha:'mariazinha123'}
 };
 
-let amigaAtual = null;
+let currentUser = null;
 
-// Login
+// LOGIN
 document.getElementById('loginBtn').onclick = () => {
-  const nome = document.getElementById('nome').value.trim();
-  const senha = document.getElementById('senha').value.trim();
-  if (perfis[nome] && perfis[nome].senha === senha) {
-    amigaAtual = perfis[nome];
-    document.getElementById('loginArea').classList.add('hidden');
-    document.getElementById('profileArea').classList.remove('hidden');
-    document.getElementById('nomePerfil').textContent = `Bem-vinda, ${nome}! 💖`;
-  } else {
-    alert("Nome ou senha incorretos!");
-  }
+  const name = document.getElementById('loginName').value.trim();
+  const pass = document.getElementById('loginPass').value.trim().replace(/\D/g,'');
+  const user = USERS[name];
+  const loginError = document.getElementById('loginError');
+  if(!user){ loginError.textContent = "Usuário não encontrado!"; return; }
+  if(pass!==user.birthday){ loginError.textContent = "Senha incorreta!"; return; }
+
+  currentUser = user;
+  loginError.textContent = '';
+  document.getElementById('loginArea').classList.add('hidden');
+  document.getElementById('profileArea').classList.remove('hidden');
+  document.getElementById('profilePhoto').src = user.photo;
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileAge').textContent = `🎂 ${user.age} anos`;
+  document.getElementById('profileDesc').textContent = user.desc;
+  document.getElementById('finalSecret').textContent = user.trueSecret;
 };
 
-// Iniciar jogo
-document.getElementById('startBtn').onclick = () => {
+// LOGOUT
+document.getElementById('logoutBtn').onclick = ()=>{
+  document.getElementById('loginArea').classList.remove('hidden');
   document.getElementById('profileArea').classList.add('hidden');
-  iniciarJogo();
+  document.getElementById('loginName').value='';
+  document.getElementById('loginPass').value='';
+  document.getElementById('gameArea').classList.add('hidden');
+  document.getElementById('quizArea').classList.add('hidden');
+  document.getElementById('secretArea').classList.add('hidden');
+  document.getElementById('msgFinal').classList.add('hidden');
 };
 
-// Jogo da memória
-function iniciarJogo() {
-  const grid = document.getElementById('grid');
-  const msg = document.getElementById('msg');
+// BOTÃO "Ficou curiosa?"
+document.getElementById('startBtn').onclick = ()=>{
+  document.getElementById('startBtn').classList.add('hidden');
   document.getElementById('gameArea').classList.remove('hidden');
-  grid.innerHTML = "";
-  msg.textContent = "";
-  const emojis = ["💋","💋","💘","💘","💕","💕","🌹","🌹"];
-  const embaralhar = emojis.sort(() => Math.random() - 0.5);
-  let viradas = [];
-  let pares = 0;
+  startMemoryGame();
+};
 
-  embaralhar.forEach(e => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.textContent = "?";
-    card.onclick = () => {
-      if (card.classList.contains("flipped") || viradas.length === 2) return;
-      card.classList.add("flipped");
-      card.textContent = e;
-      viradas.push(card);
-      if (viradas.length === 2) {
-        if (viradas[0].textContent === viradas[1].textContent) {
-          pares++;
-          viradas = [];
-          if (pares === emojis.length / 2) {
-            msg.innerHTML = `💖 Parabéns! Você zerou o jogo!<br><br>Sua senha secreta é: <b>${amigaAtual.codigo}</b>`;
-            setTimeout(() => {
-              document.getElementById('gameArea').classList.add('hidden');
+// JOGO DA MEMÓRIA
+function startMemoryGame(){
+  const board = document.getElementById('board');
+  const movesText = document.getElementById('moves');
+  const msgFinal = document.getElementById('msgFinal');
+  const emojis = ['💖','🌸','🌼','🌺','💫','⭐','🎀','🌷'];
+  let cards = [...emojis, ...emojis];
+  let flipped = [];
+  let matched = [];
+  let moves = 0;
+
+  cards.sort(()=>Math.random()-0.5);
+  board.innerHTML = '';
+  msgFinal.classList.add('hidden');
+
+  cards.forEach(emoji=>{
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.dataset.emoji = emoji;
+    div.onclick = ()=>{
+      if(flipped.length<2 && !div.classList.contains('flipped')){
+        div.classList.add('flipped');
+        div.textContent = emoji;
+        flipped.push(div);
+      }
+      if(flipped.length===2){
+        moves++;
+        movesText.textContent = `Jogadas: ${moves}`;
+        if(flipped[0].dataset.emoji===flipped[1].dataset.emoji){
+          flipped.forEach(c=>c.classList.add('matched'));
+          matched.push(...flipped);
+          flipped=[];
+          if(matched.length===cards.length){
+            setTimeout(()=>{
+              msgFinal.innerHTML = `🎉 Parabéns, ${document.getElementById('profileName').textContent}!<br>Sua senha secreta é: <b>${currentUser.senha}</b>`;
+              msgFinal.classList.remove('hidden');
               document.getElementById('secretArea').classList.remove('hidden');
-            }, 5000);
+            },400);
           }
-        } else {
-          setTimeout(() => {
-            viradas.forEach(c => { c.classList.remove("flipped"); c.textContent = "?"; });
-            viradas = [];
-          }, 800);
+        }else{
+          setTimeout(()=>{
+            flipped.forEach(c=>{c.classList.remove('flipped');c.textContent='';});
+            flipped=[];
+          },800);
         }
       }
     };
-    grid.appendChild(card);
+    board.appendChild(div);
   });
 }
 
-// Área secreta
-document.getElementById('areaBtn').onclick = () => {
+// ENTRAR NA ÁREA SECRETA
+document.getElementById('areaBtn').onclick = ()=>{
   const pass = document.getElementById('areaInput').value.trim();
-  if (pass === amigaAtual.codigo) {
+  if(pass===currentUser.senha){
     document.getElementById('secretArea').classList.add('hidden');
     document.getElementById('quizArea').classList.remove('hidden');
-  } else {
-    alert("Senha incorreta!");
+  }else{
+    alert("Senha incorreta 💔");
   }
 };
 
-// Quiz e segredo final
-document.getElementById('quizForm').onsubmit = (e) => {
+// QUIZ
+document.getElementById('quizForm').onsubmit = (e)=>{
   e.preventDefault();
   document.getElementById('quizArea').classList.add('hidden');
   document.getElementById('finalSecret').classList.remove('hidden');
-  document.getElementById('segredoTexto').textContent = amigaAtual.segredo;
+  alert("✨ Parabéns! Você desbloqueou o segredo! ✨");
 };
 </script>
-
 </body>
 </html>
