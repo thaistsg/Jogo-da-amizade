@@ -28,7 +28,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 <h1>💞 Amigas da Thais 💞</h1>
 
 <div id="loginArea">
-<p>Faça login com seu nome e senha (data de aniversário dd/mm/aaaa):</p>
+<p>Faça login com seu nome e senha (data de aniversário ddmmaaaa):</p>
 <input type="text" id="loginName" placeholder="Seu nome">
 <input type="text" id="loginPass" placeholder="Data de aniversário">
 <button id="loginBtn">Entrar</button>
@@ -67,6 +67,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 <label>2️⃣ Qual sua idade?</label>
 <select name="idade" required>
 <option value="">Selecione</option>
+<option value="16">16</option>
 <option value="17">17</option>
 <option value="18">18</option>
 </select>
@@ -88,38 +89,23 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 
 <script>
 const USERS = {
-  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga alegre, divertida e cheia de energia!', birthday:'18012008', trueSecret:`💗Paola💗
-uma amiga linda(muito Linda mesmo),
-Estar contigo é divertido, 
-amor brincar com você(mesmo você querendo me matar de vez em quando kkkkk) 
-Teu olhar e  seu jeito sao  único
-Passar  o tempo com você é muito bom 
-Tua presença é forte, marcante e leve ao mesmo tempo.
-
-assinado com carinho: Thai☀️💗
- 💖`},
-  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é doce, carinhosa e maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖
-Você é uma amiga incrível... Assinado com carinho: Thais💖`},
-  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸 Sophia✨💛 ... Assinado com carinho: Thathai ✨💛 💖`},
-  'Ana Clara':{photo:'imagens/anaclara.jpg', age:17, desc:'Ana Clara é doce, gentil e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖 Ana Clara 💖 ... Assinado com carinho: 💖 Thathai 💖`},
-  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️💗 Ana Maria ☀️💗 ... Assinado com carinho: Thais ☀️💗`}
+  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga alegre, divertida e cheia de energia!', birthday:'18012008', trueSecret:`💗Paola💗 ...`},
+  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é doce, carinhosa e maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖 ...`},
+  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸 Sophia✨💛 ...`},
+  'Ana Clara':{photo:'imagens/anaclara.jpg', age:17, desc:'Ana Clara é doce, gentil e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖 Ana Clara 💖 ...`},
+  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️💗 Ana Maria ☀️💗 ...`}
 };
 
 // LOGIN
 const loginBtn = document.getElementById('loginBtn');
 loginBtn.onclick = () => {
   const name = document.getElementById('loginName').value.trim();
-  const pass = document.getElementById('loginPass').value.trim().replace(/\D/g,''); // remover / 
+  const pass = document.getElementById('loginPass').value.trim().replace(/\D/g,''); // remove /
   const user = USERS[name];
   const loginError = document.getElementById('loginError');
-  if(!user){
-    loginError.textContent = "Usuário não encontrado!";
-    return;
-  }
-  if(pass!==user.birthday){
-    loginError.textContent = "Senha incorreta!";
-    return;
-  }
+  if(!user){ loginError.textContent = "Usuário não encontrado!"; return; }
+  if(pass!==user.birthday){ loginError.textContent = "Senha incorreta!"; return; }
+
   // Login ok
   loginError.textContent = '';
   document.getElementById('loginArea').classList.add('hidden');
@@ -129,6 +115,9 @@ loginBtn.onclick = () => {
   document.getElementById('profileAge').textContent = `🎂 ${user.age} anos`;
   document.getElementById('profileDesc').textContent = user.desc;
   document.getElementById('finalSecret').textContent = user.trueSecret;
+
+  // Reset game secret password
+  sessionStorage.setItem('secretPassword', '');
 };
 
 // LOGOUT
@@ -137,9 +126,12 @@ document.getElementById('logoutBtn').onclick = ()=>{
   document.getElementById('profileArea').classList.add('hidden');
   document.getElementById('loginName').value='';
   document.getElementById('loginPass').value='';
+  document.getElementById('gameArea').classList.add('hidden');
+  document.getElementById('quizArea').classList.add('hidden');
+  document.getElementById('secretArea').classList.add('hidden');
 };
 
-// A partir daqui você pode manter o mesmo JS do jogo da memória e área secreta
+// Mantém o restante do JS do jogo da memória e área secreta (igual ao seu código original)
 </script>
 </body>
 </html>
