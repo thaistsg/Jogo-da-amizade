@@ -87,51 +87,46 @@ button:hover { background: #ff75a5; }
 
 <div id="finalSecret" class="hidden">
     <h2>✨ Segredo Final ✨</h2>
-    <p>Vocês são as melhores amigas do mundo! 💕</p>
+    <p id="segredoTexto"></p>
 </div>
 
 <script>
+// Login e perfis
 const perfis = {
-  "Paola": "18012008",
-  "Paula": "18012008",
-  "Sophia": "01122007",
-  "Ana Clara": "02112007",
-  "Ana Maria": "08092009"
+  "Paola": { senha: "18012008", codigo: "paolinha22", segredo: "Paola, você é luz e alegria — seu sorriso muda o dia de todo mundo! 🌸" },
+  "Paula": { senha: "18012008", codigo: "paulaqueen", segredo: "Paula, você é a base da amizade — forte, divertida e única! 💕" },
+  "Sophia": { senha: "01122007", codigo: "sofi_star", segredo: "Sophia, sua energia é contagiante! Ninguém ilumina o grupo como você. ✨" },
+  "Ana Clara": { senha: "02112007", codigo: "claraheart", segredo: "Ana Clara, você é pura ternura — e sempre deixa o grupo mais leve! 🌷" },
+  "Ana Maria": { senha: "08092009", codigo: "marylove", segredo: "Ana Maria, você é o abraço em forma de gente. 💖" }
 };
 
-const loginArea = document.getElementById('loginArea');
-const profileArea = document.getElementById('profileArea');
-const nomePerfil = document.getElementById('nomePerfil');
-const startBtn = document.getElementById('startBtn');
-const gameArea = document.getElementById('gameArea');
-const secretArea = document.getElementById('secretArea');
-const quizArea = document.getElementById('quizArea');
-const finalSecret = document.getElementById('finalSecret');
-const grid = document.getElementById('grid');
-const msg = document.getElementById('msg');
+let amigaAtual = null;
 
-// LOGIN
+// Login
 document.getElementById('loginBtn').onclick = () => {
   const nome = document.getElementById('nome').value.trim();
   const senha = document.getElementById('senha').value.trim();
-  if (perfis[nome] && perfis[nome] === senha) {
-    loginArea.classList.add('hidden');
-    profileArea.classList.remove('hidden');
-    nomePerfil.textContent = `Bem-vinda, ${nome}! 💖`;
+  if (perfis[nome] && perfis[nome].senha === senha) {
+    amigaAtual = perfis[nome];
+    document.getElementById('loginArea').classList.add('hidden');
+    document.getElementById('profileArea').classList.remove('hidden');
+    document.getElementById('nomePerfil').textContent = `Bem-vinda, ${nome}! 💖`;
   } else {
     alert("Nome ou senha incorretos!");
   }
 };
 
-// BOTÃO JOGAR
-startBtn.onclick = () => {
-  profileArea.classList.add('hidden');
+// Iniciar jogo
+document.getElementById('startBtn').onclick = () => {
+  document.getElementById('profileArea').classList.add('hidden');
   iniciarJogo();
 };
 
-// JOGO DA MEMÓRIA
+// Jogo da memória
 function iniciarJogo() {
-  gameArea.classList.remove('hidden');
+  const grid = document.getElementById('grid');
+  const msg = document.getElementById('msg');
+  document.getElementById('gameArea').classList.remove('hidden');
   grid.innerHTML = "";
   msg.textContent = "";
   const emojis = ["💋","💋","💘","💘","💕","💕","🌹","🌹"];
@@ -153,11 +148,11 @@ function iniciarJogo() {
           pares++;
           viradas = [];
           if (pares === emojis.length / 2) {
-            msg.innerHTML = "💖 Parabéns! Você zerou o jogo!<br><br>Sua senha secreta é: <b>amizade123</b>";
+            msg.innerHTML = `💖 Parabéns! Você zerou o jogo!<br><br>Sua senha secreta é: <b>${amigaAtual.codigo}</b>`;
             setTimeout(() => {
-              gameArea.classList.add('hidden');
-              secretArea.classList.remove('hidden');
-            }, 4000);
+              document.getElementById('gameArea').classList.add('hidden');
+              document.getElementById('secretArea').classList.remove('hidden');
+            }, 5000);
           }
         } else {
           setTimeout(() => {
@@ -171,23 +166,23 @@ function iniciarJogo() {
   });
 }
 
-// SENHA SECRETA
-const areaBtn = document.getElementById('areaBtn');
-areaBtn.onclick = () => {
+// Área secreta
+document.getElementById('areaBtn').onclick = () => {
   const pass = document.getElementById('areaInput').value.trim();
-  if (pass === "amizade123") {
-    secretArea.classList.add('hidden');
-    quizArea.classList.remove('hidden');
+  if (pass === amigaAtual.codigo) {
+    document.getElementById('secretArea').classList.add('hidden');
+    document.getElementById('quizArea').classList.remove('hidden');
   } else {
     alert("Senha incorreta!");
   }
 };
 
-// QUIZ
+// Quiz e segredo final
 document.getElementById('quizForm').onsubmit = (e) => {
   e.preventDefault();
-  quizArea.classList.add('hidden');
-  finalSecret.classList.remove('hidden');
+  document.getElementById('quizArea').classList.add('hidden');
+  document.getElementById('finalSecret').classList.remove('hidden');
+  document.getElementById('segredoTexto').textContent = amigaAtual.segredo;
 };
 </script>
 
