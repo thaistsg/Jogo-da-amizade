@@ -18,6 +18,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 .card{width:70px;height:70px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;user-select:none;transition:transform .25s,background .25s;}
 .card.flipped{background:linear-gradient(180deg,#fff,#ffeef6);transform:rotateY(180deg);}
 .card.matched{background:#ffe0ed;border-color:#ff6fa3;pointer-events:none;}
+.flee-btn{position:absolute;background:linear-gradient(145deg,#ffb6da,#ff89b2);border-radius:50px;padding:10px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -82,7 +83,6 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 
 <div id="finalSecret" class="secretText hidden"></div>
 <button id="logoutBtn" style="margin-top:12px;">Sair</button>
-</div>
 </main>
 
 <script>
@@ -126,6 +126,7 @@ document.getElementById('logoutBtn').onclick = ()=>{
   document.getElementById('quizArea').classList.add('hidden');
   document.getElementById('secretArea').classList.add('hidden');
   document.getElementById('msgFinal').classList.add('hidden');
+  document.getElementById('finalSecret').classList.add('hidden');
 };
 
 // BOTÃO "Ficou curiosa?"
@@ -201,8 +202,34 @@ document.getElementById('areaBtn').onclick = ()=>{
 document.getElementById('quizForm').onsubmit = (e)=>{
   e.preventDefault();
   document.getElementById('quizArea').classList.add('hidden');
-  document.getElementById('finalSecret').classList.remove('hidden');
-  alert("✨ Parabéns! Você desbloqueou o verdadeiro segredo! ✨");
+  createFleeButton();
+};
+
+// BOTÃO QUE FOGE
+function createFleeButton(){
+  let count = 0;
+  const btn = document.createElement('button');
+  btn.textContent = "💖 Quer ver o verdadeiro segredo? Clique 9 vezes!";
+  btn.className = "flee-btn";
+  btn.style.top = "100px";
+  btn.style.left = "50px";
+  document.body.appendChild(btn);
+
+  btn.onclick = ()=>{
+    count++;
+    if(count>=9){
+      btn.remove();
+      document.getElementById('finalSecret').classList.remove('hidden');
+      alert("✨ Segredo desbloqueado! ✨");
+    }
+  };
+
+  document.addEventListener('mousemove', (e)=>{
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 50);
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+  });
 };
 </script>
 </body>
