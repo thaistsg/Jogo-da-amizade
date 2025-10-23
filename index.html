@@ -3,241 +3,169 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Amigas da Thais 💖</title>
+<title>Jogo do Amor 💘</title>
 <style>
-  body{font-family:'Poppins',sans-serif;margin:0;padding:0;background:#fff6fb;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;}
-  .center-card{max-width:520px;width:90%;background:#fff;padding:20px;margin-top:40px;border-radius:20px;box-shadow:0 8px 30px rgba(255,111,163,0.25);text-align:center;}
-  img{width:120px;height:120px;border-radius:50%;margin-bottom:10px;object-fit:cover;}
-  button,input,select{font-family:inherit;padding:10px;border-radius:10px;border:1px solid #f0d8e6;width:100%;margin:6px 0;}
-  button{background:linear-gradient(145deg,#ffb6da,#ff89b2);color:white;font-weight:600;border:0;cursor:pointer;transition:.18s;}
-  button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
+  body{font-family:'Poppins',sans-serif;margin:0;padding:0;background:#ffe6f0;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;}
+  .card-center{max-width:520px;width:92%;background:#fff;border-radius:20px;padding:20px;margin-top:40px;box-shadow:0 8px 24px rgba(255,100,160,0.25);text-align:center;}
+  img{width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:10px;}
+  button,input,select{font-family:inherit;padding:10px;border-radius:10px;border:1px solid #f5cadd;width:100%;margin:5px 0;}
+  button{background:linear-gradient(145deg,#ffb6da,#ff89b2);color:white;font-weight:600;border:none;cursor:pointer;}
+  button:active{transform:scale(0.97);}
   .hidden{display:none!important;}
-  .secret-btn{margin-top:12px;padding:12px;border-radius:50px;background:linear-gradient(145deg,#ffb6da,#ff89b2);color:#fff;font-size:1em;cursor:pointer;position:relative;}
-  .secretText{margin-top:20px;padding:15px;border-radius:12px;background:linear-gradient(145deg,#fff0f4,#ffe3ee);color:#4a333f;font-weight:600;text-align:left;white-space:pre-line;}
-  .board{display:grid;grid-template-columns:repeat(4,70px);gap:10px;justify-content:center;padding:16px;}
-  .card{width:70px;height:70px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;user-select:none;transition:transform .25s,background .25s;}
-  .card.flipped{background:linear-gradient(180deg,#fff,#ffeef6);transform:rotateY(180deg);}
-  .card.matched{background:#ffe0ed;border-color:#ff6fa3;pointer-events:none;}
+  .secretText{background:#fff0f5;border-radius:12px;padding:12px;margin-top:10px;}
+  .board{display:grid;grid-template-columns:repeat(4,70px);gap:10px;justify-content:center;padding:10px;}
+  .card{width:70px;height:70px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;user-select:none;}
+  .card.flipped{background:#ffe4f0;}
+  .card.matched{background:#ffd3e4;}
 </style>
 </head>
 <body>
-<main class="center-card">
-  <h1>💞 Amigas da Thais 💞</h1>
+<div class="card-center">
+  <h2>💘 Jogo do Amor 💘</h2>
 
   <div id="loginArea">
-    <p>Faça login com seu nome e senha (data de aniversário ddmmaaaa):</p>
-    <input id="loginName" placeholder="Seu nome">
-    <input id="loginPass" placeholder="Data de aniversário">
-    <button id="loginBtn" type="button">Entrar</button>
-    <div id="loginError" style="color:red;"></div>
+    <input id="loginName" placeholder="Nome">
+    <input id="loginPass" placeholder="Data de aniversário (ddmmaaaa)">
+    <button id="loginBtn">Entrar</button>
+    <div id="loginError" style="color:red;font-size:0.9em;"></div>
   </div>
 
   <div id="profileArea" class="hidden">
-    <img id="profilePhoto" src="" alt="foto">
-    <h1 id="profileName"></h1>
-    <div id="profileAge"></div>
-    <div class="secretText" id="profileDesc"></div>
+    <img id="profilePhoto" src="">
+    <h3 id="profileName"></h3>
+    <p id="profileDesc"></p>
+    <button id="startBtn">💖 Ficou curiosa?</button>
 
-    <!-- tipo=button para segurança -->
-    <button id="startBtn" class="secret-btn" type="button">💖 Ficou curiosa? Quer jogar e descobrir segredos?</button>
-
-    <div id="gameArea" class="hidden" style="margin-top:15px;">
-      <h3>🎮 Jogo da Memória</h3>
+    <div id="gameArea" class="hidden">
+      <h4>🎮 Jogo da Memória</h4>
       <div class="board" id="board"></div>
       <p id="moves">Jogadas: 0</p>
-      <button id="resetBtn" type="button">🔁 Reiniciar</button>
     </div>
 
-    <div id="secretArea" class="hidden" style="margin-top:20px;">
-      <h3>🔐 Área Secreta</h3>
-      <p>Digite a senha para entrar na Área Secreta:</p>
-      <input id="areaInput" placeholder="Digite a senha">
-      <button id="areaBtn" type="button">Entrar</button>
-
-      <div id="quizArea" class="hidden" style="margin-top:20px;">
-        <h3>📝 Quiz</h3>
-        <form id="quizForm">
-          <label>1️⃣ Qual seu nome?</label>
-          <select name="nome" required>
-            <option value="">Selecione</option>
-            <option>Paola</option><option>Paula</option><option>Sophia</option><option>Ana Clara</option><option>Ana Maria</option>
-          </select>
-          <label>2️⃣ Qual sua idade?</label>
-          <select name="idade" required>
-            <option value="">Selecione</option>
-            <option value="16">16</option><option value="17">17</option><option value="18">18</option>
-          </select>
-          <label>3️⃣ Qual sua cor favorita?</label><input name="cor" required>
-          <label>4️⃣ Você gosta de algum esporte?</label><input name="esporte" required>
-          <label>5️⃣ Qual sua comida favorita?</label><input name="comida" required>
-          <label>6️⃣ Qual sua música favorita?</label><input name="musica" required>
-          <label>7️⃣ Você tem algum hobby?</label><input name="hobby" required>
-          <label>8️⃣ Se pudesse ter um superpoder, qual seria?</label><input name="superpoder" required>
-          <button type="submit">✅ Enviar Quiz</button>
-        </form>
-      </div>
-
-      <div id="finalSecret" class="secretText hidden"></div>
-      <button id="logoutBtn" type="button" style="margin-top:12px;">Sair</button>
+    <div id="secretArea" class="hidden">
+      <h4>🔐 Área Secreta</h4>
+      <input id="areaInput" placeholder="Senha">
+      <button id="areaBtn">Entrar</button>
+      <div id="finalSecret" class="hidden secretText"></div>
+      <button id="logoutBtn">Sair</button>
     </div>
   </div>
-</main>
+</div>
 
 <script>
-/* ========== DADOS ========== */
 const USERS = {
-  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga icrivel!', birthday:'18012008', trueSecret:`💗Paola💗 é pura energia e alegria!`},
-  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖 é um anjo com coração gigante`},
-  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸Sophia✨ tem um brilho especial`},
-  'Ana Clara':{photo:'https://i.imgur.com/0uKx9T2.jpeg', age:17, desc:'Ana Clara é doce e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖Ana Clara💖 é sensível e sonhadora`},
-  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️Ana Maria☀️ é luz e alegria`},
+  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg',desc:'Paola é uma amiga alegre, divertida e cheia de energia!',birthday:'18012008',secret:'💗Paola💗 é pura energia e alegria!'},
+  'Paula':{photo:'https://i.imgur.com/skvcx12.png',desc:'Paula é doce, carinhosa e maravilhosa!',birthday:'18012008',secret:'💖Paula💖 é um anjo com coração gigante!'},
+  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg',desc:'Sophia tem um brilho único, sempre espalhando alegria ✨',birthday:'01122007',secret:'🌸Sophia✨ tem um brilho especial!'},
+  'Ana Clara':{photo:'https://i.imgur.com/0uKx9T2.jpeg',desc:'Ana Clara é doce, gentil e cheia de sonhos 💫',birthday:'02112007',secret:'💖Ana Clara💖 é sensível e sonhadora!'},
+  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg',desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸',birthday:'08092009',secret:'☀️Ana Maria☀️ é luz e alegria!'},
 };
 
-/* ========== ELEMENTOS ========== */
-const loginBtn = document.getElementById('loginBtn');
-const loginName = document.getElementById('loginName');
-const loginPass = document.getElementById('loginPass');
-const loginError = document.getElementById('loginError');
-const profileArea = document.getElementById('profileArea');
-const profilePhoto = document.getElementById('profilePhoto');
-const profileName = document.getElementById('profileName');
-const profileAge = document.getElementById('profileAge');
-const profileDesc = document.getElementById('profileDesc');
-const finalSecret = document.getElementById('finalSecret');
-const startBtn = document.getElementById('startBtn');
-const gameArea = document.getElementById('gameArea');
-const board = document.getElementById('board');
-const movesText = document.getElementById('moves');
-const resetBtn = document.getElementById('resetBtn');
-const secretArea = document.getElementById('secretArea');
-const areaInput = document.getElementById('areaInput');
-const areaBtn = document.getElementById('areaBtn');
-const quizArea = document.getElementById('quizArea');
-const quizForm = document.getElementById('quizForm');
-const logoutBtn = document.getElementById('logoutBtn');
+const loginBtn=document.getElementById('loginBtn');
+const loginName=document.getElementById('loginName');
+const loginPass=document.getElementById('loginPass');
+const loginError=document.getElementById('loginError');
+const profileArea=document.getElementById('profileArea');
+const profileName=document.getElementById('profileName');
+const profilePhoto=document.getElementById('profilePhoto');
+const profileDesc=document.getElementById('profileDesc');
+const startBtn=document.getElementById('startBtn');
+const gameArea=document.getElementById('gameArea');
+const board=document.getElementById('board');
+const movesText=document.getElementById('moves');
+const secretArea=document.getElementById('secretArea');
+const areaBtn=document.getElementById('areaBtn');
+const areaInput=document.getElementById('areaInput');
+const finalSecret=document.getElementById('finalSecret');
+const logoutBtn=document.getElementById('logoutBtn');
 
-/* ========== LOGIN ========== */
-loginBtn.addEventListener('click', () => {
-  const name = loginName.value.trim();
-  const pass = loginPass.value.trim().replace(/\D/g,'');
-  const user = USERS[name];
-  if(!user){ loginError.textContent="Usuário não encontrado!"; return; }
-  if(pass !== user.birthday){ loginError.textContent="Senha incorreta!"; return; }
+let currentUser=null;
 
-  // sucesso
+loginBtn.addEventListener('touchstart',doLogin);
+loginBtn.addEventListener('click',doLogin);
+
+function doLogin(){
+  const name=loginName.value.trim();
+  const pass=loginPass.value.trim().replace(/\D/g,'');
+  const user=USERS[name];
+  if(!user){loginError.textContent="Usuário não encontrado!";return;}
+  if(pass!==user.birthday){loginError.textContent="Senha incorreta!";return;}
   loginError.textContent='';
+  currentUser=user;
   document.getElementById('loginArea').classList.add('hidden');
   profileArea.classList.remove('hidden');
-  profilePhoto.src = user.photo;
-  profileName.textContent = name;
-  profileAge.textContent = `🎂 ${user.age} anos`;
-  profileDesc.textContent = user.desc;
-  finalSecret.textContent = user.trueSecret;
-
-  // garantir que botões/áreas estejam em estado inicial
-  startBtn.classList.remove('hidden');
-  gameArea.classList.add('hidden');
-  secretArea.classList.add('hidden');
-  quizArea.classList.add('hidden');
-  finalSecret.classList.add('hidden');
-});
-
-/* ========== LOGOUT ========== */
-logoutBtn.addEventListener('click', () => {
-  document.getElementById('loginArea').classList.remove('hidden');
-  profileArea.classList.add('hidden');
-  loginName.value = '';
-  loginPass.value = '';
-});
-
-/* ========== JOGO DA MEMÓRIA ========== */
-const emojis = ['💖','🌸','💫','🦋','🎀','🍓','🌼','⭐'];
-let flipped = [];
-let matched = 0;
-let moves = 0;
-
-function initBoard(){
-  board.innerHTML = '';
-  flipped = [];
-  matched = 0;
-  moves = 0;
-  movesText.textContent = 'Jogadas: 0';
-  const pairs = [...emojis, ...emojis].sort(()=>Math.random()-0.5);
-  pairs.forEach(sym=>{
-    const el = document.createElement('div');
-    el.className = 'card';
-    el.dataset.symbol = sym;
-    el.textContent = '';
-    el.addEventListener('click', ()=>flipCard(el));
-    board.appendChild(el);
-  });
+  profileName.textContent=name;
+  profilePhoto.src=user.photo;
+  profileDesc.textContent=user.desc;
 }
 
-function flipCard(el){
-  if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
-  if(flipped.length === 2) return;
-  el.textContent = el.dataset.symbol;
-  el.classList.add('flipped');
-  flipped.push(el);
-  if(flipped.length === 2){
-    moves++;
-    movesText.textContent = 'Jogadas: '+moves;
-    setTimeout(checkMatch, 550);
-  }
-}
+startBtn.addEventListener('touchstart',startGame);
+startBtn.addEventListener('click',startGame);
 
-function checkMatch(){
-  if(flipped.length < 2) return;
-  const [a,b] = flipped;
-  if(a.dataset.symbol === b.dataset.symbol){
-    a.classList.add('matched');
-    b.classList.add('matched');
-    matched++;
-    if(matched === emojis.length){
-      setTimeout(()=> {
-        alert('🎉 Você venceu o jogo da memória! Agora abra a Área Secreta.');
-        secretArea.classList.remove('hidden');
-      }, 300);
-    }
-  } else {
-    a.classList.remove('flipped'); a.textContent = '';
-    b.classList.remove('flipped'); b.textContent = '';
-  }
-  flipped = [];
-}
-
-resetBtn.addEventListener('click', initBoard);
-
-/* ========== BOTÃO PRINCIPAL (corrigido) ========== */
-function startButtonHandler(){
-  console.log('startBtn clicado');
+function startGame(){
   startBtn.classList.add('hidden');
   gameArea.classList.remove('hidden');
   initBoard();
 }
 
-// clique normal + toque mobile
-startBtn.addEventListener('click', startButtonHandler);
-startBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); startButtonHandler(); }, {passive:false});
+const emojis=['💖','🌸','💫','🦋','🎀','🍓','🌼','⭐'];
+let flipped=[],matched=0,moves=0;
 
-/* ========== ÁREA SECRETA e QUIZ ========== */
-const SECRET_CODE = 'amizade123';
-areaBtn.addEventListener('click', ()=>{
-  const val = areaInput.value.trim();
-  if(val === SECRET_CODE){
-    secretArea.classList.add('hidden');
-    quizArea.classList.remove('hidden');
-  } else {
+function initBoard(){
+  board.innerHTML='';flipped=[];matched=0;moves=0;movesText.textContent='Jogadas: 0';
+  const arr=[...emojis,...emojis].sort(()=>Math.random()-0.5);
+  arr.forEach(sym=>{
+    const c=document.createElement('div');
+    c.className='card';
+    c.dataset.s=sym;
+    c.addEventListener('touchstart',()=>flip(c));
+    c.addEventListener('click',()=>flip(c));
+    board.appendChild(c);
+  });
+}
+
+function flip(c){
+  if(c.classList.contains('flipped')||c.classList.contains('matched'))return;
+  if(flipped.length===2)return;
+  c.textContent=c.dataset.s;
+  c.classList.add('flipped');
+  flipped.push(c);
+  if(flipped.length===2){
+    moves++;movesText.textContent='Jogadas: '+moves;
+    setTimeout(checkMatch,500);
+  }
+}
+
+function checkMatch(){
+  const [a,b]=flipped;
+  if(a.dataset.s===b.dataset.s){
+    a.classList.add('matched');b.classList.add('matched');matched++;
+    if(matched===emojis.length){
+      setTimeout(()=>{
+        alert('🎉 Você venceu! Vá para a área secreta!');
+        secretArea.classList.remove('hidden');
+      },300);
+    }
+  }else{
+    a.classList.remove('flipped');b.classList.remove('flipped');a.textContent='';b.textContent='';
+  }
+  flipped=[];
+}
+
+areaBtn.addEventListener('touchstart',()=>checkSecret());
+areaBtn.addEventListener('click',()=>checkSecret());
+
+function checkSecret(){
+  if(areaInput.value.trim()==='amizade123'){
+    finalSecret.classList.remove('hidden');
+    finalSecret.textContent=currentUser.secret;
+  }else{
     alert('Senha incorreta 💔');
   }
-});
+}
 
-quizForm.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  quizArea.classList.add('hidden');
-  finalSecret.classList.remove('hidden');
-  alert('✨ Parabéns! Você descobriu o segredo! ✨');
-});
+logoutBtn.addEventListener('touchstart',()=>location.reload());
+logoutBtn.addEventListener('click',()=>location.reload());
 </script>
 </body>
 </html>
