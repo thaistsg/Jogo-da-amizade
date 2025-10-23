@@ -53,6 +53,7 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 <p>Digite a senha que apareceu pra você:</p>
 <input id="areaInput" placeholder="Digite a senha">
 <button id="areaBtn">Entrar</button>
+</div>
 
 <div id="quizArea" class="hidden" style="margin-top:20px;">
 <h3>📝 Quiz</h3>
@@ -86,11 +87,11 @@ button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);}
 
 <script>
 const USERS = {
-  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga alegre, divertida e cheia de energia!', birthday:'18012008', trueSecret:`💗Paola💗 ...`, senha:'paola123'},
-  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é doce, carinhosa e maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖 ...`, senha:'paula123'},
-  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸 Sophia✨💛 ...`, senha:'sophia123'},
-  'Ana Clara':{photo:'imagens/anaclara.jpg', age:17, desc:'Ana Clara é doce, gentil e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖 Ana Clara 💖 ...`, senha:'clarinha123'},
-  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️💗 Ana Maria ☀️💗 ...`, senha:'mariazinha123'}
+  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg', age:17, desc:'Paola é uma amiga alegre, divertida e cheia de energia!', birthday:'18012008', trueSecret:`💗Paola💗 você é uma amiga incrível!`, senha:'paola123'},
+  'Paula':{photo:'https://i.imgur.com/skvcx12.png', age:17, desc:'Paula é doce, carinhosa e maravilhosa!', birthday:'18012008', trueSecret:`💖Paula💖 sempre ilumina o grupo com alegria!`, senha:'paula123'},
+  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg', age:17, desc:'Sophia tem um brilho único, sempre espalhando alegria ✨', birthday:'01122007', trueSecret:`🌸 Sophia✨💛 espalha amor e risadas por onde passa!`, senha:'sophia123'},
+  'Ana Clara':{photo:'imagens/anaclara.jpg', age:17, desc:'Ana Clara é doce, gentil e cheia de sonhos 💫', birthday:'02112007', trueSecret:`💖 Ana Clara 💖 tem o coração mais lindo!`, senha:'clarinha123'},
+  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg', age:16, desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸', birthday:'08092009', trueSecret:`☀️💗 Ana Maria ☀️💗 é alegria em pessoa!`, senha:'mariazinha123'}
 };
 
 let currentUser = null;
@@ -201,7 +202,7 @@ document.getElementById('quizForm').onsubmit = (e)=>{
   e.preventDefault();
   document.getElementById('quizArea').classList.add('hidden');
   document.getElementById('finalSecret').classList.remove('hidden');
-  alert("✨ Parabéns! Você desbloqueou o segredo! ✨");
+  alert("✨ Parabéns! Você desbloqueou o verdadeiro segredo! ✨");
 };
 </script>
 </body>
