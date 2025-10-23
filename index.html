@@ -46,6 +46,22 @@
       <h4>🔐 Área Secreta</h4>
       <input id="areaInput" placeholder="Senha">
       <button id="areaBtn">Entrar</button>
+
+      <div id="quizArea" class="hidden">
+        <h4>📝 Quiz</h4>
+        <form id="quizForm">
+          <label>1️⃣ Qual seu nome?</label>
+          <input name="nome" required>
+          <label>2️⃣ Qual sua cor favorita?</label>
+          <input name="cor" required>
+          <label>3️⃣ Qual sua comida favorita?</label>
+          <input name="comida" required>
+          <label>4️⃣ Qual seu hobby?</label>
+          <input name="hobby" required>
+          <button type="submit">✅ Enviar</button>
+        </form>
+      </div>
+
       <div id="finalSecret" class="hidden secretText"></div>
       <button id="logoutBtn">Sair</button>
     </div>
@@ -54,11 +70,11 @@
 
 <script>
 const USERS = {
-  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg',desc:'Paola é uma amiga alegre, divertida e cheia de energia!',birthday:'18012008',secret:'💗Paola💗 é pura energia e alegria!'},
-  'Paula':{photo:'https://i.imgur.com/skvcx12.png',desc:'Paula é doce, carinhosa e maravilhosa!',birthday:'18012008',secret:'💖Paula💖 é um anjo com coração gigante!'},
-  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg',desc:'Sophia tem um brilho único, sempre espalhando alegria ✨',birthday:'01122007',secret:'🌸Sophia✨ tem um brilho especial!'},
-  'Ana Clara':{photo:'https://i.imgur.com/0uKx9T2.jpeg',desc:'Ana Clara é doce, gentil e cheia de sonhos 💫',birthday:'02112007',secret:'💖Ana Clara💖 é sensível e sonhadora!'},
-  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg',desc:'Ana Maria é divertida, carinhosa e sempre ilumina o ambiente 🌸',birthday:'08092009',secret:'☀️Ana Maria☀️ é luz e alegria!'},
+  'Paola':{photo:'https://i.imgur.com/Cv5vGLY.jpeg',desc:'Paola é alegre e divertida!',birthday:'18012008',secret:'💗Paola💗 espalha felicidade por onde passa!'},
+  'Paula':{photo:'https://i.imgur.com/skvcx12.png',desc:'Paula é doce e carinhosa!',birthday:'18012008',secret:'💖Paula💖 é puro amor e alegria!'},
+  'Sophia':{photo:'https://i.imgur.com/gKwnPay.jpeg',desc:'Sophia tem um brilho único ✨',birthday:'01122007',secret:'🌸Sophia✨ tem um coração de ouro!'},
+  'Ana Clara':{photo:'https://i.imgur.com/0uKx9T2.jpeg',desc:'Ana Clara é gentil e sonhadora 💫',birthday:'02112007',secret:'💖Ana Clara💖 acredita na magia da amizade!'},
+  'Ana Maria':{photo:'https://i.imgur.com/jVfeabT.jpeg',desc:'Ana Maria é divertida e carinhosa 🌸',birthday:'08092009',secret:'☀️Ana Maria☀️ ilumina todos os dias!'},
 };
 
 const loginBtn=document.getElementById('loginBtn');
@@ -76,13 +92,16 @@ const movesText=document.getElementById('moves');
 const secretArea=document.getElementById('secretArea');
 const areaBtn=document.getElementById('areaBtn');
 const areaInput=document.getElementById('areaInput');
+const quizArea=document.getElementById('quizArea');
+const quizForm=document.getElementById('quizForm');
 const finalSecret=document.getElementById('finalSecret');
 const logoutBtn=document.getElementById('logoutBtn');
 
 let currentUser=null;
 
-loginBtn.addEventListener('touchstart',doLogin);
+// LOGIN
 loginBtn.addEventListener('click',doLogin);
+loginBtn.addEventListener('touchstart',doLogin);
 
 function doLogin(){
   const name=loginName.value.trim();
@@ -99,8 +118,9 @@ function doLogin(){
   profileDesc.textContent=user.desc;
 }
 
-startBtn.addEventListener('touchstart',startGame);
+// JOGO DA MEMÓRIA
 startBtn.addEventListener('click',startGame);
+startBtn.addEventListener('touchstart',startGame);
 
 function startGame(){
   startBtn.classList.add('hidden');
@@ -118,8 +138,8 @@ function initBoard(){
     const c=document.createElement('div');
     c.className='card';
     c.dataset.s=sym;
-    c.addEventListener('touchstart',()=>flip(c));
     c.addEventListener('click',()=>flip(c));
+    c.addEventListener('touchstart',()=>flip(c));
     board.appendChild(c);
   });
 }
@@ -152,20 +172,29 @@ function checkMatch(){
   flipped=[];
 }
 
-areaBtn.addEventListener('touchstart',()=>checkSecret());
-areaBtn.addEventListener('click',()=>checkSecret());
+// ÁREA SECRETA
+areaBtn.addEventListener('click',checkSecret);
+areaBtn.addEventListener('touchstart',checkSecret);
 
 function checkSecret(){
   if(areaInput.value.trim()==='amizade123'){
-    finalSecret.classList.remove('hidden');
-    finalSecret.textContent=currentUser.secret;
+    quizArea.classList.remove('hidden');
   }else{
     alert('Senha incorreta 💔');
   }
 }
 
-logoutBtn.addEventListener('touchstart',()=>location.reload());
+// QUIZ
+quizForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  quizArea.classList.add('hidden');
+  finalSecret.classList.remove('hidden');
+  finalSecret.textContent=currentUser.secret;
+});
+
+// SAIR
 logoutBtn.addEventListener('click',()=>location.reload());
+logoutBtn.addEventListener('touchstart',()=>location.reload());
 </script>
 </body>
 </html>
